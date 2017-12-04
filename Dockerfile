@@ -1,8 +1,8 @@
-FROM nginx:alpine
+FROM alpine:3.6
 
 
 RUN apk update && \
-    apk add bash supervisor python python-dev py-pip\
+    apk add nginx bash supervisor python python-dev py-pip\
     openssl-dev \
     ca-certificates certbot && \
     mkdir -p /var/log/supervisor && \
