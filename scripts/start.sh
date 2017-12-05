@@ -44,7 +44,7 @@ fi
 # Display Version Details or not
 if [[ "$HIDE_NGINX_HEADERS" == "0" ]] ; then
  sed -i "s/server_tokens off;/server_tokens on;/g" /etc/nginx/nginx.conf
-else
+#else
  #sed -i "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini
 fi
 
