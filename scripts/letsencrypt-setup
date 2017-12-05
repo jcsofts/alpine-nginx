@@ -16,6 +16,7 @@ else
  fi
 
  kill -QUIT `cat /var/run/nginx.pid`
+ rm /var/run/nginx.pid
  exec /usr/sbin/nginx -g "daemon off;"
  
 fi
