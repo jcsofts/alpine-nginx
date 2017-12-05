@@ -83,4 +83,5 @@ fi
 
 # Start supervisord and services
 #exec /usr/bin/supervisord -n -c /etc/supervisord.conf
+rm -f /var/run/nginx.pid
 exec /usr/sbin/nginx -g "daemon off;"
