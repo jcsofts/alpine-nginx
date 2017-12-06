@@ -16,17 +16,21 @@ RUN mkdir -p /etc/nginx/sites-available/ && \
 	mkdir -p /etc/nginx/sites-enabled/ && \
 	mkdir -p /etc/nginx/ssl/ && \
 	rm -Rf /var/www/* && \
-	mkdir -p /var/www/html/
+	mkdir -p /var/www/html/ && \
+	rm -rf /var/cache/apk/*
+
 ADD conf/conf.d/default.conf /etc/nginx/sites-available/default.conf
 ADD conf/conf.d/default-ssl.conf /etc/nginx/sites-available/default-ssl.conf
-RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 
 # Add Scripts
 ADD scripts/start.sh /start.sh
 ADD scripts/letsencrypt-setup /usr/bin/letsencrypt-setup
 ADD scripts/letsencrypt-renew /usr/bin/letsencrypt-renew
-RUN chmod 755 /usr/bin/letsencrypt-setup && chmod 755 /usr/bin/letsencrypt-renew && chmod 755 /start.sh
+RUN chmod 755 /usr/bin/letsencrypt-setup && \
+	chmod 755 /usr/bin/letsencrypt-renew && \
+	chmod 755 /start.sh && \
+	ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 # copy in code
 ADD src/ /var/www/html/
