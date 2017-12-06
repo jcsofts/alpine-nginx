@@ -3,40 +3,35 @@ FROM alpine:3.6
 
 RUN apk update && \
     apk add nginx certbot && \
-    mkdir -p /etc/letsencrypt/webrootauth
-
-#ADD conf/supervisord.conf /etc/supervisord.conf
-
-# nginx site conf
-COPY conf/nginx.conf /etc/nginx/nginx.conf
-
-
-# nginx site conf
-RUN mkdir -p /etc/nginx/sites-available/ && \
+    mkdir -p /etc/letsencrypt/webrootauth && \
+	rm -rf /var/cache/apk/* && \
+	mkdir -p /etc/nginx/sites-available/ && \
 	mkdir -p /etc/nginx/sites-enabled/ && \
 	mkdir -p /etc/nginx/ssl/ && \
 	rm -Rf /var/www/* && \
-	mkdir -p /var/www/html/ && \
-	rm -rf /var/cache/apk/*
+	mkdir -p /var/www/html/ 
 
-ADD conf/conf.d/default.conf /etc/nginx/sites-available/default.conf
-ADD conf/conf.d/default-ssl.conf /etc/nginx/sites-available/default-ssl.conf
+
+#ADD conf/supervisord.conf /etc/supervisord.conf
+
+
+# nginx site conf
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY conf/conf.d/ /etc/nginx/sites-available/
 
 
 # Add Scripts
-ADD scripts/start.sh /start.sh
-ADD scripts/letsencrypt-setup /usr/bin/letsencrypt-setup
-ADD scripts/letsencrypt-renew /usr/bin/letsencrypt-renew
-RUN chmod 755 /usr/bin/letsencrypt-setup && \
-	chmod 755 /usr/bin/letsencrypt-renew && \
-	chmod 755 /start.sh && \
+COPY scripts/ /usr/local/bin/
+RUN chmod 755 /usr/local/bin/letsencrypt-setup && \
+	chmod 755 /usr/local/bin/letsencrypt-renew && \
+	chmod 755 /usr/local/bin/start.sh && \
 	ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 # copy in code
-ADD src/ /var/www/html/
+COPY src/ /var/www/html/
 # ADD errors/ /var/www/errors
 
 
 EXPOSE 443 80
 
-CMD ["/start.sh"]
+CMD ["/usr/local/bin/start.sh"]
