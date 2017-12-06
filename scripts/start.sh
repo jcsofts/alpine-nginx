@@ -17,14 +17,15 @@ fi
 # Set custom webroot
 if [ ! -z "$WEBROOT" ]; then
  sed -i "s#root /var/www/html;#root ${WEBROOT};#g" /etc/nginx/sites-available/default.conf
+ sed -i "s#root /var/www/html;#root ${WEBROOT};#g" /etc/nginx/sites-available/default-ssl.conf
 else
  webroot=/var/www/html
 fi
 
-#if [ ! -z "$DOMAIN" ]; then
-# sed -i "s#server_name localhost;#server_name ${DOMAIN};#g" /etc/nginx/sites-available/default.conf
-# sed -i "s#server_name localhost;#server_name ${DOMAIN};#g" /etc/nginx/sites-available/default-ssl.conf
-#fi
+if [ ! -z "$DOMAIN" ]; then
+ sed -i "s#server_name localhost;#server_name ${DOMAIN};#g" /etc/nginx/sites-available/default.conf
+ sed -i "s#server_name localhost;#server_name ${DOMAIN};#g" /etc/nginx/sites-available/default-ssl.conf
+fi
 
 
 # Enable custom nginx config files if they exist
