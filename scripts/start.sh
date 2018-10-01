@@ -43,7 +43,7 @@ fi
 
 
 # Display Version Details or not
-if [[ "$HIDE_NGINX_HEADERS" == "0" ]] ; then
+if [[ "$HIDE_NGINX_HEADERS" != "0" ]] ; then
  sed -i "s/server_tokens off;/server_tokens on;/g" /etc/nginx/nginx.conf
 #else
  #sed -i "s/expose_php = On/expose_php = Off/g" /etc/php7/php.ini
@@ -77,7 +77,7 @@ if [ ! -z "$PUID" ]; then
   adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx -u ${PUID} nginx
 else
   if [ -z "$SKIP_CHOWN" ]; then
-    chown -Rf www-data.www-data /var/www/html
+    chown -Rf nginx.nginx /var/www/html
   fi
 fi
 
